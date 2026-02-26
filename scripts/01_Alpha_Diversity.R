@@ -1,17 +1,3 @@
-###############################################################################
-# 01_Alpha_Diversity.R
-# Alpha diversity analysis for gut metagenome data
-# - Shannon and Pielou indices
-# - MaAsLin2 for covariate-adjusted comparisons (Gender, BMI; Family as random effect)
-# - Visualization: half-violin + half-boxplot + half-point (Figure 1d)
-#
-# Required input files:
-#   data/clean/metaphlan/MicrobiomeData.rds
-#
-# Required R packages:
-#   here, dplyr, MicrobiomeStat, Maaslin2, ggplot2, gghalves, patchwork
-###############################################################################
-
 # --- 0. Load libraries -------------------------------------------------------
 library(here)
 library(dplyr)

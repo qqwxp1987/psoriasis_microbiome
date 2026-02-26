@@ -1,20 +1,3 @@
-###############################################################################
-# 02_Beta_Diversity.R
-# Beta diversity analysis for gut metagenome data
-# - Bray-Curtis, Jaccard and JSD distance calculation
-# - PERMANOVA (adonis2) with covariates (Gender, BMI)
-# - Pairwise inter-group distance boxplot (Figure 1b)
-# - Hierarchical clustering dendrogram + stacked barplot (Figure 1a)
-#
-# Required input files:
-#   data/clean/metaphlan/MicrobiomeData.rds
-#   data/clean/metaphlan/phyloseq_taxa.rds
-#
-# Required R packages:
-#   here, dplyr, vegan, mice, reshape2, ape, phyloseq,
-#   ggplot2, gghalves, patchwork, ggtree, ggstance, ggsci, ggClusterNet
-###############################################################################
-
 # --- 0. Load libraries -------------------------------------------------------
 library(here)
 library(dplyr)
