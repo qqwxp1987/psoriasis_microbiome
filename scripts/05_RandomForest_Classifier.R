@@ -1,21 +1,3 @@
-###############################################################################
-# 05_RandomForest_Classifier.R
-# Random Forest classification model for psoriasis prediction
-# - Feature selection: Boruta + findLinearCombos
-# - Model training: caret RF with 5-fold x5-repeat CV
-# - External validation: ROC curves + DeLong tests
-# - Precision-Recall curves (ROCR)
-# - Confusion matrix with optimal threshold
-# - SMOTE for class imbalance (Validation set)
-#
-# Generates results corresponding to:
-# - Table SM1: Comprehensive Performance Metrics
-# - Table SM2: Precision-Recall AUC Comparison
-# - Figure SM1: RF Hyperparameter Tuning and CV Performance
-# - Figure SM2: Confusion Matrices
-# - Figure SM3: PR Curves (original and SMOTE)
-# - Figure SM4: ROC Curves on SMOTE balanced set
-###############################################################################
 
 # --- 0. Load libraries -------------------------------------------------------
 library(Boruta)
@@ -355,4 +337,3 @@ Table_SM2 <- data.frame(
 )
 write.csv(Table_SM2, file.path(out_dir, "Table_SM2_PR_AUC_Comparison.csv"), row.names = FALSE)
 
-message("05_RandomForest_Classifier.R completed: Figures SM1-SM4 and Tables SM1-SM2 generated in outputs/RandomForest/")
