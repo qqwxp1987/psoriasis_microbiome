@@ -1,84 +1,63 @@
-###############################################################################
-# 07_Genomic_Annotation.R
-# Functional annotation and enrichment analysis
-# - MicrobiomeProfiler: KEGG module/pathway enrichment from differential KOs
-# - EggNOG-mapper annotation barplot for t__SGB4348 genome
-#
-# Required input files:
-#   Differential KO list from LEfSe results
-#
-# Required R packages:
-#   here, ggplot2, MicrobiomeProfiler
-###############################################################################
-
-# --- 0. Load libraries -------------------------------------------------------
+# --- 0. Load Libraries -------------------------------------------------------
 library(here)
+library(dplyr)
 library(ggplot2)
 
-# --- 1. KEGG enrichment analysis with MicrobiomeProfiler ---------------------
-# The differential KOs from LEfSe (script 06) or MaAsLin2 are used as input.
-# MicrobiomeProfiler provides a Shiny-based interactive interface.
-#
-# Differential KOs enriched in Psoriasis:
-#   K02919, K01784, K03569, K00773, K02108
-#
-# Differential KOs enriched in Healthy:
-#   K01190, K05349, K02500, K07114, K01187, K03497, K01812, K21571,
-#   K01785, K06142, K06871, K01950, K04762, K20265, K00991, K01689,
-#   K09807, K03564, K03781, K01681, K03281, K01192, K00764, K04564, K01923, K08961
+# --- 1. Load Data ------------------------------------------------------------
+# The KO annotations for the Fimenecus sp000432435 (SGB4348) genome
+# were generated via the eggNOG-mapper pipeline.
+# were generated via the eggNOG-mapper pipeline.
+# To support reproducible non-interactive execution, we directly load the
+# KEGG enrichment results previously generated via MicrobiomeProfiler.
+res_dir <- here("CodeAvailiable", "outputs", "genomic_annotation")
+res_file <- file.path(res_dir, "Enrichment_Res.csv")
+enrich_res <- read.csv(res_file, row.names = 1)
 
-library(MicrobiomeProfiler)
-# Launch the interactive interface to perform enrichment
-# run_MicrobiomeProfiler()
+# Filter for significant pathways (pvalue < 0.05)
+# This results in the 15 KEGG pathways shown in Figure 4
+sig_res <- enrich_res %>%
+    filter(pvalue < 0.05) %>%
+    arrange(pvalue) %>%
+    head(15)
 
-# Results summary (from interactive analysis):
-# Enriched KEGG pathways (p.adjust < 0.05):
-#   map00052  Galactose metabolism          4/19  p=0.006
-#   map04212  Longevity regulating pathway  2/19  p=0.020
-#   map00511  Other glycan degradation      2/19  p=0.020
-#   map04146  Peroxisome                    2/19  p=0.020
+# Format the GeneRatio column from "x/y" to a numeric proportion
+sig_res <- sig_res %>%
+    mutate(GeneRatio_Num = sapply(strsplit(as.character(GeneRatio), "/"), function(x) {
+        as.numeric(x[1]) / as.numeric(x[2])
+    }))
 
-cat("
-=================================================================
-KEGG Enrichment Results (MicrobiomeProfiler)
-=================================================================
-Pathway                              GeneRatio  BgRatio    p.adjust
-map00052 Galactose metabolism        4/19       48/3034    0.006
-map04212 Longevity regulating (worm) 2/19       10/3034    0.020
-map00511 Other glycan degradation    2/19       12/3034    0.020
-map04146 Peroxisome                  2/19       12/3034    0.020
-=================================================================
-")
+# Make Description a factor for ordered plotting
+sig_res$Description <- factor(sig_res$Description, levels = rev(sig_res$Description))
 
-
-# --- 2. EggNOG-mapper annotation summary for t__SGB4348 ----------------------
-# Annotation pipeline: Prodigal -> eggNOG-mapper -> KEGG modules
-# Data represents gene annotation steps for t__GGB51647_SGB4348
-
-steps <- c(
-    "Predicted Genes", "Genes with COGs",
-    "Genes with KO Annotations", "KEGG Modules"
-)
-gene_counts <- c(187, 179, 114, 33)
-
-df <- data.frame(Step = factor(steps, levels = steps), GeneCount = gene_counts)
-
-bar_plot <- ggplot(df) +
-    aes(x = Step, y = GeneCount, fill = Step) +
-    geom_col() +
-    scale_fill_brewer(palette = "YlGnBu", direction = -1) +
-    theme_minimal() +
-    geom_text(aes(label = GeneCount), vjust = -0.5, size = 5) +
+# --- 2. Generate Figure 4 (Dot Plot) -----------------------------------------
+p_dot <- ggplot(sig_res, aes(x = GeneRatio_Num, y = Description)) +
+    geom_point(aes(size = Count, color = pvalue)) +
+    scale_color_gradient(low = "red", high = "blue") +
+    theme_bw() +
     labs(
-        title = "Gene Annotation Process for t__GGB51647_SGB4348",
-        y = "Number"
+        title = "KEGG Enrichment of Fimenecus sp000432435 Genome",
+        x = "Gene Ratio",
+        y = "",
+        color = "pvalue",
+        size = "Count"
+    ) +
+    theme(
+        axis.text.y = element_text(size = 10),
+        plot.title = element_text(hjust = 0.5)
     )
 
-out_dir <- here("outputs", "t__SGB4348_annotation")
-dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+# --- 3. Save Outputs ---------------------------------------------------------
+out_dir <- here("CodeAvailiable", "outputs", "genomic_annotation")
+if (!dir.exists(out_dir)) {
+    dir.create(out_dir, recursive = TRUE)
+}
 
-ggsave(bar_plot,
-    filename = file.path(out_dir, "GenesNo_stat.pdf"),
-    width = 10
+ggsave(
+    filename = file.path(out_dir, "Figure4_SGB4348_KEGG_Enrichment_DotPlot.pdf"),
+    plot = p_dot, width = 8, height = 6
 )
 
+# Print a summary to the console
+cat("\n=== Top 15 Significant KEGG Pathways (pvalue < 0.05) ===\n")
+print(sig_res[, c("Description", "Count", "pvalue")])
+cat("\nPlot saved to:", file.path(out_dir, "Figure4_SGB4348_KEGG_Enrichment_DotPlot.pdf"), "\n")

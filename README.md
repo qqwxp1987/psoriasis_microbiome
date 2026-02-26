@@ -13,14 +13,16 @@ psoriasis_microbiome/
 │   ├── 03_Network_Analysis.R         # Co-occurrence networks (ggClusterNet)
 │   ├── 04_Differential_Abundance.R   # LEfSe, LinDA, MaAsLin2 (species/KO/Pathway)
 │   ├── 05_RandomForest_Classifier.R  # Boruta + RF, ROC/PRC, confusion matrix
-│   ├── 06_Prevalence_OddsRatio.R     # Prevalence, Fisher test, OR, waffle chart
-│   ├── 07_Genomic_Annotation.R       # KEGG enrichment, EggNOG-mapper barplot
+│   ├── 06_Prevalence_OddsRatio.R     # Prevalence, Fisher test, OR
+│   ├── 07_Genomic_Annotation.R       # SGB4348 KEGG enrichment DotPlot
 │   └── 08_Correlation_Analysis.R     # Partial Spearman correlation (ppcor)
 ├── data/
 │   ├── metadata.txt
 │   ├── humann/
 │   │   ├── filter_ko_relab.tsv
 │   │   └── filter_path_relab.tsv
+│   ├── genome_annotation/            # EggNOG KEGG outputs for Fimenecus sp000432435
+│   │   └── KO_input.txt
 │   └── metaphlan/
 │       ├── MicrobiomeData.rds
 │       └── phyloseq_taxa.rds
@@ -28,6 +30,7 @@ psoriasis_microbiome/
     ├── alpha_diversity/
     ├── beta_diversity/
     ├── differential_abundance/
+    ├── genomic_annotation/
     ├── network_igraph/
     │   ├── 143_3grp/
     │   └── 28pairs_2grp/
