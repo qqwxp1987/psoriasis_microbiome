@@ -1,25 +1,3 @@
-###############################################################################
-# 04_Differential_Abundance.R
-# Differential abundance analysis for species and functional features
-# - Species: LEfSe (microbiomeMarker) on 28 pairs (Figure 2a)
-# - Species: MaAsLin2 validation with Gender + BMI adjustment (Figure 2b)
-# - Species: LinDA volcano (MicrobiomeStat) on 28 pairs (Figure 2b)
-# - KO/Pathway: LEfSe + MaAsLin2 pipeline (Figure 4a/4b/4c)
-# - 8 differential species scatter plot (Figure 2c/2d)
-#
-# Required input files:
-#   data/clean/metaphlan/phyloseq_taxa.rds
-#   data/clean/metaphlan/phyloseq_taxa_20240401.rds
-#   data/clean/humann/filter_ko_relab_20240419.tsv
-#   data/clean/humann/filter_path_20240401.tsv
-#   data/clean/metadata/metadata_20240401.txt
-#   data/clean/metadata/metadata_28pairs_20240528.txt
-#
-# Required R packages:
-#   here, dplyr, phyloseq, microbiomeMarker, MicrobiomeStat,
-#   Maaslin2, mice, ggplot2, gghalves, patchwork, reshape2, rio
-###############################################################################
-
 # --- 0. Load libraries -------------------------------------------------------
 library(here)
 library(dplyr)
@@ -57,6 +35,7 @@ phylo28pairs.obj@sam_data$BMI <- data_imputed$BMI
 ordercolors <- c("steelblue", "indianred")
 
 # --- 1.3 Run LEfSe -----------------------------------------------------------
+dir.create(here("outputs", "differential_abundance"), recursive = TRUE, showWarnings = FALSE)
 res <- run_lefse(
     ps = phylo28pairs.obj,
     group = "Disease",
@@ -79,31 +58,31 @@ res <- run_lefse(
 # --- 1.4 LEfSe plots ---------------------------------------------------------
 p1 <- plot_ef_dot(res)
 ggsave(p1,
-    filename = here("outputs", "microbiomeMarker", "LEfsE_28pairs_ef_dot.pdf"),
+    filename = here("outputs", "differential_abundance", "LEfsE_28pairs_ef_dot.pdf"),
     width = 20, height = 10
 )
 
 p2 <- plot_abundance(res, group = "Disease")
 ggsave(p2,
-    filename = here("outputs", "microbiomeMarker", "LEfsE_28pairs_abundance.pdf"),
+    filename = here("outputs", "differential_abundance", "LEfsE_28pairs_abundance.pdf"),
     width = 20, height = 10
 )
 
 p3 <- plot_cladogram(res, color = ordercolors)
 ggsave(p3,
-    filename = here("outputs", "microbiomeMarker", "LEfsE_28pairs_cladogram.pdf"),
+    filename = here("outputs", "differential_abundance", "LEfsE_28pairs_cladogram.pdf"),
     width = 25, height = 20
 )
 
 # --- 1.5 Extract markers -----------------------------------------------------
 res.marker <- subset_marker(res)
 marker.tab <- res.marker@marker_table %>% as.matrix()
-write.csv(marker.tab, file = here("outputs", "microbiomeMarker", "LefsE_28pairs_markers_res.csv"))
+write.csv(marker.tab, file = here("outputs", "differential_abundance", "LefsE_28pairs_markers_res.csv"))
 
 marker.profile <- res.marker@otu_table@.Data %>%
     as.data.frame() %>%
     dplyr::filter(rownames(.) %in% marker.tab[, 1])
-write.csv(marker.profile, file = here("outputs", "microbiomeMarker", "LefsE_28pairs_markers_profile.csv"))
+write.csv(marker.profile, file = here("outputs", "differential_abundance", "LefsE_28pairs_markers_profile.csv"))
 
 
 # =============================================================================
@@ -111,8 +90,7 @@ write.csv(marker.profile, file = here("outputs", "microbiomeMarker", "LefsE_28pa
 # =============================================================================
 
 # --- 2.1 Data loading --------------------------------------------------------
-phylo.obj2 <- readRDS(here("data", "metaphlan", "phyloseq_taxa_20240401.rds"))
-phylo28pairs.obj2 <- subset_samples(phylo.obj2, Dataset == "Train")
+phylo28pairs.obj2 <- subset_samples(phylo.obj, Dataset == "Train")
 
 # Convert to MicrobiomeStat object
 data.obj2 <- mStat_convert_phyloseq_to_data_obj(phylo28pairs.obj2)
@@ -145,6 +123,7 @@ test.list <- generate_taxa_test_single(
 )
 
 # --- 2.4 Volcano plot ---------------------------------------------------------
+dir.create(here("outputs", "differential_abundance", "LinDA"), recursive = TRUE, showWarnings = FALSE)
 volcano_plots <- generate_taxa_volcano_single(
     data.obj          = data.obj2,
     group.var         = "Disease",
@@ -156,7 +135,7 @@ volcano_plots <- generate_taxa_volcano_single(
 
 ggsave(volcano_plots$Species$`Psoriasis vs Healthy (Reference)`,
     filename = here(
-        "outputs", "Differential", "LinDA", "Species",
+        "outputs", "differential_abundance", "LinDA",
         "Adjust_Gender_BMI_28pairs.pdf"
     ),
     width = 10, height = 6
@@ -189,10 +168,11 @@ data_imputed3 <- data_imputed3 %>%
 input_meta3 <- data_imputed3
 
 # --- 3.2 Run MaAsLin2 --------------------------------------------------------
+dir.create(here("outputs", "differential_abundance", "MaAsLin2"), recursive = TRUE, showWarnings = FALSE)
 fit_data3 <- Maaslin2(
     input_data = input_data3,
     input_metadata = input_meta3,
-    output = here("outputs", "Differential", "MaAsLin2", "Species"),
+    output = here("outputs", "differential_abundance", "MaAsLin2"),
     min_abundance = 0.0,
     min_prevalence = 0.1,
     min_variance = 0.0,
@@ -216,11 +196,16 @@ fit_data3 <- Maaslin2(
 # PART 4: Functional features - KO & Pathway LEfSe
 # =============================================================================
 
-# --- 4.1 Pathway LEfSe -------------------------------------------------------
-meta_28 <- rio::import(here("data", "metadata_28pairs_20240528.txt"))
-path <- rio::import(here("data", "humann", "filter_path_20240401.tsv"))
-path <- path %>% tibble::column_to_rownames("NAME")
-path <- path[-c(1, 2), ]
+# --- 4.1 Load metadata for 28 pairs ------------------------------------------
+meta_all <- read.delim(here("data", "metadata.txt"), row.names = 1)
+meta_28 <- meta_all %>%
+    tibble::rownames_to_column("SampleID") %>%
+    dplyr::filter(Dataset == "Train")
+
+# --- 4.2 Pathway LEfSe -------------------------------------------------------
+path <- read.delim(here("data", "humann", "filter_path_relab.tsv"), row.names = 1)
+# Remove UNMAPPED and UNINTEGRATED rows if present
+path <- path[!grepl("^UNMAPPED$|^UNINTEGRATED", rownames(path)), ]
 
 path28pairs <- path[, meta_28$SampleID]
 
@@ -245,13 +230,13 @@ res_path <- run_lefse(
 )
 
 write.csv(subset_marker(res_path)@marker_table %>% as.matrix(),
-    file = here("outputs", "microbiomeMarker", "LefsE_28pairs_pathway_markers_res.csv")
+    file = here("outputs", "differential_abundance", "LefsE_28pairs_pathway_markers_res.csv")
 )
 
-# --- 4.2 KO LEfSe ------------------------------------------------------------
-KO <- rio::import(here("data", "humann", "filter_ko_relab_20240419.tsv"))
-KO <- KO %>% tibble::column_to_rownames("NAME")
-KO <- KO[-1, ]
+# --- 4.3 KO LEfSe ------------------------------------------------------------
+KO <- read.delim(here("data", "humann", "filter_ko_relab.tsv"), row.names = 1)
+# Remove UNGROUPED row if present
+KO <- KO[!grepl("^UNGROUPED$", rownames(KO)), ]
 
 ko28pairs <- KO[, meta_28$SampleID]
 
@@ -273,50 +258,55 @@ res_ko <- run_lefse(
 )
 
 write.csv(subset_marker(res_ko)@marker_table %>% as.matrix(),
-    file = here("outputs", "microbiomeMarker", "LefsE_28pairs_KO_markers_res.csv")
+    file = here("outputs", "differential_abundance", "LefsE_28pairs_KO_markers_res.csv")
 )
 
 
 # =============================================================================
 # PART 5: Figure 4A - LEfSe combined KO + Pathway bar plot
 # =============================================================================
+# Note: This part requires a manually curated input file that combines
+# LEfSe results from KO and Pathway analyses. The file is generated from
+# the marker tables produced in PART 4 above.
+# If the file does not exist, this section will be skipped.
 
-data_fig4a <- rio::import(here("outputs", "Other_Figures", "Function_lefse_res_input4figure.xlsx"))
-data_fig4a$LDA <- ifelse(data_fig4a$enrich_group == "Healthy",
-    data_fig4a$ef_lda * (-1), data_fig4a$ef_lda
-)
-data_fig4a <- data_fig4a[order(data_fig4a$Type, -data_fig4a$LDA), ]
-data_fig4a$Name <- factor(data_fig4a$Name, levels = data_fig4a$Name)
+lefse_fig_path <- here("outputs", "differential_abundance", "Function_lefse_res_input4figure.xlsx")
+if (file.exists(lefse_fig_path)) {
+    dir.create(here("outputs", "differential_abundance"), recursive = TRUE, showWarnings = FALSE)
+    data_fig4a <- rio::import(lefse_fig_path)
+    data_fig4a$LDA <- ifelse(data_fig4a$enrich_group == "Healthy",
+        data_fig4a$ef_lda * (-1), data_fig4a$ef_lda
+    )
+    data_fig4a <- data_fig4a[order(data_fig4a$Type, -data_fig4a$LDA), ]
+    data_fig4a$Name <- factor(data_fig4a$Name, levels = data_fig4a$Name)
 
-p_fig4a <- ggplot(data_fig4a) +
-    aes(x = Name, y = LDA, fill = enrich_group) +
-    geom_col() +
-    scale_fill_manual(values = c(Healthy = "steelblue", Psoriasis = "indianred")) +
-    coord_flip() +
-    theme_minimal()
+    p_fig4a <- ggplot(data_fig4a) +
+        aes(x = Name, y = LDA, fill = enrich_group) +
+        geom_col() +
+        scale_fill_manual(values = c(Healthy = "steelblue", Psoriasis = "indianred")) +
+        coord_flip() +
+        theme_minimal()
 
-ggsave(p_fig4a,
-    filename = here("outputs", "Other_Figures", "Lefse_path_KO.pdf"),
-    width = 20, height = 10
-)
+    ggsave(p_fig4a,
+        filename = here("outputs", "differential_abundance", "Lefse_path_KO.pdf"),
+        width = 20, height = 10
+    )
+} else {
+    message("Skipping PART 5: Function_lefse_res_input4figure.xlsx not found.")
+}
 
 
 # =============================================================================
-# PART 6: Figure 4C - Differential KO boxplots (free y-axis)
+# PART 6: Differential KO boxplots (free y-axis)
 # =============================================================================
 
-library(gghalves)
 library(patchwork)
 library(reshape2)
 
-dirpath <- here("data", "humann")
-ko_rel <- read.delim(file.path(dirpath, "filter_ko_relab_20240419.tsv"), row.names = 1)
-ko_rel <- ko_rel[-1, ]
-meta_f4 <- read.delim(here("data", "metadata_20240401.txt"), row.names = 1)
+ko_rel <- read.delim(here("data", "humann", "filter_ko_relab.tsv"), row.names = 1)
+ko_rel <- ko_rel[!grepl("^UNGROUPED$", rownames(ko_rel)), ]
 
-samp_incl <- meta_f4 %>%
-    filter(Dataset == "Train") %>%
-    rownames()
+samp_incl <- meta_28$SampleID
 ko_rel_incl <- ko_rel %>% dplyr::select(all_of(samp_incl))
 ko_rel_incl <- proportions(as.matrix(ko_rel_incl), margin = 2) %>% as.data.frame()
 
@@ -333,9 +323,9 @@ pld_ko$Group <- rep(c("Control", "Psoriasis"), each = 28)
 pld_ko_long <- melt(pld_ko)
 
 KO_plot <- ggplot(data = pld_ko_long, aes(x = Group, y = value, fill = Group)) +
-    geom_half_violin(side = "r", color = NA, alpha = 0.35) +
-    geom_half_boxplot(side = "r", errorbar.draw = FALSE, width = 0.2, linewidth = 0.5) +
-    geom_half_point_panel(side = "l", shape = 21, size = 3, color = "white") +
+    geom_violin(alpha = 0.35, color = NA) +
+    geom_boxplot(width = 0.2, linewidth = 0.5, outlier.shape = NA) +
+    geom_jitter(shape = 21, size = 2, color = "white", width = 0.1) +
     scale_fill_manual(values = c("steelblue", "indianred")) +
     scale_x_discrete(labels = c("Healthy", "Psoriasis")) +
     labs(y = "Relative Abundance (10e-4)", x = NULL) +
@@ -347,18 +337,18 @@ KO_plot <- ggplot(data = pld_ko_long, aes(x = Group, y = value, fill = Group)) +
     )
 
 KO_plot_col2 <- KO_plot + facet_wrap(vars(variable), scales = "free_y", ncol = 2L)
+dir.create(here("outputs", "differential_abundance"), recursive = TRUE, showWarnings = FALSE)
 ggsave(KO_plot_col2,
-    filename = here("outputs", "Other_Figures", "KOgenes_boxplot_col2_freey.pdf"),
+    filename = here("outputs", "differential_abundance", "KOgenes_boxplot_col2_freey.pdf"),
     height = 15
 )
 
 
 # =============================================================================
-# PART 7: 8 differential species scatter plot (Figure 2c/2d)
+# PART 7: 8 differential species scatter plot
 # =============================================================================
 
-phylo28p <- readRDS(here("data", "metaphlan", "phyloseq_taxa_20240401.rds"))
-phylo28p <- subset_samples(phylo28p, Dataset == "Train")
+phylo28p <- subset_samples(phylo.obj, Dataset == "Train")
 
 input_data7 <- phylo28p@otu_table@.Data %>% as.data.frame()
 taxtab7 <- phylo28p@tax_table@.Data %>% as.data.frame()
@@ -403,6 +393,7 @@ summary_data <- summary_data %>%
         ) ~ "Both"
     ))
 
+dir.create(here("outputs", "differential_abundance"), recursive = TRUE, showWarnings = FALSE)
 p_8sp <- ggplot(summary_data, aes(x = NonZeroCount, y = MeanAbundance, color = Species)) +
     geom_point(aes(shape = Group), size = 4) +
     geom_line(aes(group = Species), linetype = "dashed", color = "gray") +
@@ -413,6 +404,8 @@ p_8sp <- ggplot(summary_data, aes(x = NonZeroCount, y = MeanAbundance, color = S
     theme(legend.position = "right")
 
 ggsave(p_8sp,
-    filename = here("outputs", "Differential", "eight_diff_species.pdf"),
+    filename = here("outputs", "differential_abundance", "eight_diff_species.pdf"),
     width = 15
 )
+
+message("04_Differential_Abundance.R completed successfully.")
