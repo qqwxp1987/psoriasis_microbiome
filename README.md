@@ -28,9 +28,10 @@ psoriasis_microbiome/
     ├── alpha_diversity/
     ├── beta_diversity/
     ├── differential_abundance/
-    └── network_igraph/
-        ├── 143_3grp/
-        └── 28pairs_2grp/
+    ├── network_igraph/
+    │   ├── 143_3grp/
+    │   └── 28pairs_2grp/
+    └── RandomForest/
 ```
 
 ## Prerequisites

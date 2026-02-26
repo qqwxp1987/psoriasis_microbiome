@@ -6,15 +6,15 @@
 # - External validation: ROC curves + DeLong tests
 # - Precision-Recall curves (ROCR)
 # - Confusion matrix with optimal threshold
-# - SMOTE for class imbalance (optional)
+# - SMOTE for class imbalance (Validation set)
 #
-# Required input files (in scripts/caret_data_code/):
-#   train_metaphlan_taxonomic_profiles_20240418.csv  (Discovery set CLR abundance)
-#   train_metadata_20240401.txt                      (Discovery set metadata)
-#   extra_data_20240418.csv                          (Validation set CLR abundance)
-#
-# Required R packages:
-#   Boruta, caret, dplyr, pROC, patchwork, ggpubr, scales, tidyr, ROCR, DMwR
+# Generates results corresponding to:
+# - Table SM1: Comprehensive Performance Metrics
+# - Table SM2: Precision-Recall AUC Comparison
+# - Figure SM1: RF Hyperparameter Tuning and CV Performance
+# - Figure SM2: Confusion Matrices
+# - Figure SM3: PR Curves (original and SMOTE)
+# - Figure SM4: ROC Curves on SMOTE balanced set
 ###############################################################################
 
 # --- 0. Load libraries -------------------------------------------------------
@@ -25,24 +25,13 @@ library(pROC)
 library(patchwork)
 library(ggplot2)
 library(here)
+library(ggpubr)
+library(scales)
+library(tidyr)
+library(ROCR)
+# library(DMwR) # Loaded dynamically when needed
 
-# --- 1. Helper function: plot single ROC curve --------------------------------
-plot1ROC <- function(roc) {
-    P <- plot(roc,
-        print.auc = TRUE,
-        auc.polygon = TRUE,
-        grid = TRUE,
-        max.auc.polygon = TRUE,
-        max.auc.polygon.col = "white",
-        auc.polygon.col = "#C9DBEF",
-        print.thres = TRUE,
-        legacy.axes = FALSE,
-        bty = "l"
-    )
-    return(list(plot = P, ci.auc = ci.auc(roc)))
-}
-
-# --- 2. Load training data (Discovery set: 28 pairs) -------------------------
+# --- 1. Load training data (Discovery set: 28 pairs) -------------------------
 data_dir <- here("scripts", "caret_data_code")
 
 abu <- read.csv(file.path(data_dir, "train_metaphlan_taxonomic_profiles_20240418.csv"),
@@ -58,7 +47,7 @@ TrainY <- read.csv(file.path(data_dir, "train_metadata_20240401.txt"),
 )
 Train <- cbind(TrainY, TrainX)
 
-# --- 3. Preprocessing function ------------------------------------------------
+# --- 2. Preprocessing function ------------------------------------------------
 caret_preprocess <- function(fileGroup = NULL, fileOTU = NULL,
                              caret_formula = "Group~.",
                              metaphlanFormat = FALSE,
@@ -105,7 +94,7 @@ caret_preprocess <- function(fileGroup = NULL, fileOTU = NULL,
     return(Data)
 }
 
-# --- 4. Boruta feature selection-----------------------------------------------
+# --- 3. Boruta feature selection ----------------------------------------------
 caret_formula <- "Group~."
 
 # Method 1: Boruta only
@@ -139,7 +128,7 @@ pdf(file = file.path(out_dir, "boruta_model2.pdf"), width = 10, height = 5)
 plot(Boruta.srx2, las = 2, xlab = "")
 dev.off()
 
-# --- 5. Define model formulas -------------------------------------------------
+# --- 4. Define model formulas -------------------------------------------------
 # Model 1: 9 features from Boruta (no collinearity filter)
 formula1 <- as.formula("Group ~ s__GGB51647_SGB4348 + s__GGB3746_SGB5089 + s__GGB33085_SGB1673 +
     s__Prevotella_stercorea + s__Clostridium_sp_AF20_17LB + s__Bacteroides_finegoldii +
@@ -151,7 +140,7 @@ formula2 <- as.formula("Group ~ s__GGB51647_SGB4348 + s__GGB1109_SGB1423 + s__GG
 # Model 3: Single feature (s__GGB51647_SGB4348 only)
 formula3 <- as.formula("Group ~ s__GGB51647_SGB4348")
 
-# --- 6. Train RF models with 5-fold x 5-repeat CV -----------------------------
+# --- 5. Train RF models with 5-fold x 5-repeat CV -----------------------------
 set.seed(1234)
 fitControl <- caret::trainControl(method = "repeatedcv", number = 5, repeats = 5)
 tuneGrid <- expand.grid(mtry = c(1:10))
@@ -178,11 +167,7 @@ P0 <- ggplot(caret::varImp(fit1, scale = FALSE)) +
     theme(text = element_text(size = 15))
 ggsave(filename = file.path(out_dir, "varImp_model1.pdf"), plot = P0, width = 6, height = 3)
 
-# --- 7. Training metrics visualization ----------------------------------------
-library(ggpubr)
-library(scales)
-library(tidyr)
-
+# --- 6. Figure SM1: Training metrics visualization ----------------------------
 plot_train_metrics <- function(fit_obj, outname) {
     p1 <- ggplot(fit_obj) +
         scale_x_continuous(breaks = scales::pretty_breaks()) +
@@ -212,11 +197,12 @@ plot_train_metrics <- function(fit_obj, outname) {
     ggsave(filename = file.path(out_dir, outname), plot = p0, width = 6, height = 6)
 }
 
-plot_train_metrics(fit1, "vars9_trainset_metric.pdf")
-plot_train_metrics(fit2, "vars3_trainset_metric.pdf")
-plot_train_metrics(fit3, "vars1_trainset_metric.pdf")
+plot_train_metrics(fit1, "Figure_SM1a_Model1_metrics.pdf")
+plot_train_metrics(fit2, "Figure_SM1b_Model2_metrics.pdf")
+plot_train_metrics(fit3, "Figure_SM1c_Model3_metrics.pdf")
 
-# --- 8. External validation (Validation set) ----------------------------------
+
+# --- 7. Load Validation Data --------------------------------------------------
 abu2 <- read.csv(file.path(data_dir, "extra_data_20240418.csv"),
     sep = ",", header = TRUE, row.names = 1, check.names = FALSE
 )
@@ -227,11 +213,12 @@ for (t in bateria_names2) {
 }
 colnames(abu2) <- yy
 
-# Use original (unbalanced) test data
 TestX <- dplyr::select(abu2, -Group)
+# Note: Psoriasis is the positive class. Ensure factors are set with Healthy as reference,
+# or Psoriasis as the second level (often the positive class in caret).
 TestY <- factor(abu2[, "Group"], levels = c("Healthy", "Psoriasis"))
 
-# Predictions
+# Predictions on original validation set
 pred1 <- predict(fit1, newdata = TestX, type = "prob")
 pred2 <- predict(fit2, newdata = TestX, type = "prob")
 pred3 <- predict(fit3, newdata = TestX, type = "prob")
@@ -241,42 +228,51 @@ roc1 <- pROC::roc(response = TestY, predictor = pred1[, 2], ci = TRUE)
 roc2 <- pROC::roc(response = TestY, predictor = pred2[, 2], ci = TRUE)
 roc3 <- pROC::roc(response = TestY, predictor = pred3[, 2], ci = TRUE)
 
-# DeLong tests
-message("DeLong test: Model1 vs Model2")
-roc.test(roc1, roc2)
-message("DeLong test: Model1 vs Model3")
-roc.test(roc1, roc3)
-message("DeLong test: Model2 vs Model3")
-roc.test(roc2, roc3)
+# --- 8. Figure SM2 & Table SM1: Validation Set Metrics ------------------------
+compute_metrics <- function(fit_obj, TestX, TestY, model_name, roc_obj) {
+    pred0 <- predict(fit_obj, newdata = TestX, type = "prob")
+    bestp <- roc_obj$thresholds[which.max(roc_obj$sensitivities + roc_obj$specificities - 1)]
+    pred_class <- factor(ifelse(pred0[, 2] > bestp, "Psoriasis", "Healthy"), levels = c("Healthy", "Psoriasis"))
 
-# --- 9. ROC curve plot --------------------------------------------------------
-pdf(file = file.path(out_dir, "AUC-ROC.pdf"), width = 7, height = 7)
-plot(roc1,
-    print.auc = TRUE, grid = TRUE,
-    max.auc.polygon = TRUE, max.auc.polygon.col = "white",
-    print.auc.x = 0.75, print.auc.y = 0.45,
-    legacy.axes = FALSE, bty = "l", col = "#00A087"
-)
-plot(roc2,
-    print.auc = TRUE, print.auc.x = 0.68, print.auc.y = 0.78,
-    add = TRUE, col = "#4DBBD5"
-)
-plot(roc3,
-    print.auc = TRUE, print.auc.x = 0.42, print.auc.y = 0.92,
-    add = TRUE, col = "#E64B35"
-)
-legend("bottomright",
-    legend = c(
-        "Model1 (Boruta)", "Model2 (findLinearCombos+Boruta)",
-        "Model3 (s__GGB51647_SGB4348)"
-    ),
-    col = c("#00A087", "#4DBBD5", "#E64B35"),
-    lwd = 2, bg = "white", cex = 0.9
-)
+    cm <- caret::confusionMatrix(data = pred_class, reference = TestY, positive = "Psoriasis", mode = "everything")
+
+    metrics <- data.frame(
+        Model = model_name,
+        ROC_AUC = as.numeric(roc_obj$auc),
+        Accuracy = cm$overall["Accuracy"],
+        Sensitivity = cm$byClass["Sensitivity"],
+        Specificity = cm$byClass["Specificity"],
+        Precision = cm$byClass["Precision"],
+        F1_Score = cm$byClass["F1"],
+        Balanced_Accuracy = cm$byClass["Balanced Accuracy"],
+        Cohen_Kappa = cm$overall["Kappa"]
+    )
+
+    # Save Confusion Matrix as pseudo "Figure SM2" representation in text format
+    sink(file.path(out_dir, paste0("Figure_SM2_", model_name, "_CM.txt")))
+    print(cm)
+    sink()
+
+    return(metrics)
+}
+
+metrics1 <- compute_metrics(fit1, TestX, TestY, "Model 1", roc1)
+metrics2 <- compute_metrics(fit2, TestX, TestY, "Model 2", roc2)
+metrics3 <- compute_metrics(fit3, TestX, TestY, "Model 3", roc3)
+
+Table_SM1 <- bind_rows(metrics1, metrics2, metrics3)
+write.csv(Table_SM1, file.path(out_dir, "Table_SM1_Validation_Metrics.csv"), row.names = FALSE)
+
+
+# --- 9. Original ROC Curve Plot (for reference) -------------------------------
+pdf(file = file.path(out_dir, "Original_ROC.pdf"), width = 7, height = 7)
+plot(roc1, print.auc = TRUE, grid = TRUE, legacy.axes = FALSE, bty = "l", col = "#00A087", print.auc.x = 0.75, print.auc.y = 0.45)
+plot(roc2, print.auc = TRUE, add = TRUE, col = "#4DBBD5", print.auc.x = 0.68, print.auc.y = 0.78)
+plot(roc3, print.auc = TRUE, add = TRUE, col = "#E64B35", print.auc.x = 0.42, print.auc.y = 0.92)
+legend("bottomright", legend = c("Model1 (Boruta)", "Model2 (findLinearCombos+Boruta)", "Model3 (s__GGB51647_SGB4348)"), col = c("#00A087", "#4DBBD5", "#E64B35"), lwd = 2, bg = "white", cex = 0.9)
 dev.off()
 
-# --- 10. Precision-Recall curve -----------------------------------------------
-library(ROCR)
+# --- 10. Figure SM3a: Original PR Curves --------------------------------------
 pred_obj1 <- prediction(pred1[, 2], TestY)
 pred_obj2 <- prediction(pred2[, 2], TestY)
 pred_obj3 <- prediction(pred3[, 2], TestY)
@@ -285,48 +281,78 @@ prc1 <- performance(pred_obj1, measure = "prec", x.measure = "rec")
 prc2 <- performance(pred_obj2, measure = "prec", x.measure = "rec")
 prc3 <- performance(pred_obj3, measure = "prec", x.measure = "rec")
 
-v1 <- performance(pred_obj1, measure = "aucpr")@y.values[[1]]
-v2 <- performance(pred_obj2, measure = "aucpr")@y.values[[1]]
-v3 <- performance(pred_obj3, measure = "aucpr")@y.values[[1]]
+aucpr1 <- performance(pred_obj1, measure = "aucpr")@y.values[[1]]
+aucpr2 <- performance(pred_obj2, measure = "aucpr")@y.values[[1]]
+aucpr3 <- performance(pred_obj3, measure = "aucpr")@y.values[[1]]
 
-pdf(file = file.path(out_dir, "AUC-PRC.pdf"), width = 7, height = 7)
-plot(prc1,
-    main = "Precision-Recall Curve (AUC-PR)", ylim = c(0, 1),
-    xlab = "Recall", ylab = "Precision", col = "#00A087", lwd = 2
-)
+pdf(file = file.path(out_dir, "Figure_SM3a_PRC_Original.pdf"), width = 7, height = 7)
+plot(prc1, main = "PR Curve (Original Validation Set)", ylim = c(0, 1), xlab = "Recall", ylab = "Precision", col = "#00A087", lwd = 2)
 plot(prc2, add = TRUE, col = "#4DBBD5", lwd = 2)
 plot(prc3, add = TRUE, col = "#E64B35", lwd = 2)
-legend("bottomleft",
-    legend = c(
-        paste0("Model1 (Boruta, AUC-PRC: ", round(v1, 4), ")"),
-        paste0("Model2 (findLinearCombos+Boruta, AUC-PRC: ", round(v2, 4), ")"),
-        paste0("Model3 (s__GGB51647_SGB4348, AUC-PRC: ", round(v3, 4), ")")
-    ),
-    col = c("#00A087", "#4DBBD5", "#E64B35"),
-    lwd = 2, bg = "white", cex = 0.9
-)
+legend("bottomleft", legend = c(paste0("Model1 (PR-AUC: ", round(aucpr1, 2), ")"), paste0("Model2 (PR-AUC: ", round(aucpr2, 2), ")"), paste0("Model3 (PR-AUC: ", round(aucpr3, 2), ")")), col = c("#00A087", "#4DBBD5", "#E64B35"), lwd = 2, bg = "white")
 dev.off()
 
-# --- 11. Confusion matrix (using optimal Youden threshold) --------------------
-compute_cm <- function(fit_obj, TestX, TestY, model_name) {
-    pred0 <- predict(fit_obj, newdata = TestX, type = "prob")
-    roc_tmp <- pROC::roc(response = TestY, predictor = pred0[, 2])
-    bestp <- roc_tmp$thresholds[which.max(roc_tmp$sensitivities + roc_tmp$specificities - 1)]
-    pred <- as.factor(ifelse(pred0[, 2] > bestp,
-        levels(as.factor(TestY))[2],
-        levels(as.factor(TestY))[1]
-    ))
-    cm <- caret::confusionMatrix(
-        data = pred,
-        reference = as.factor(TestY),
-        positive = levels(as.factor(TestY))[2],
-        mode = "everything"
-    )
-    message(paste("--- Confusion Matrix for", model_name, "---"))
-    print(cm)
-    return(cm)
-}
 
-cm1 <- compute_cm(fit1, TestX, TestY, "Model1")
-cm2 <- compute_cm(fit2, TestX, TestY, "Model2")
-cm3 <- compute_cm(fit3, TestX, TestY, "Model3")
+# --- 11. SMOTE Balancing (SM6.2) ----------------------------------------------
+library(DMwR)
+set.seed(1234)
+
+# Combine TestX and TestY for SMOTE
+val_data <- abu2
+val_data$Group <- factor(val_data$Group, levels = c("Healthy", "Psoriasis"))
+
+# Apply SMOTE (perc.over = 200 handles minority (Healthy=17) -> 51. perc.under = 200 handles majority (Pso) -> 68)
+smote_data <- SMOTE(Group ~ ., data = val_data, perc.over = 200, perc.under = 200)
+
+cat(sprintf("SMOTE Balanced Set: %d Pso, %d Healthy\n", sum(smote_data$Group == "Psoriasis"), sum(smote_data$Group == "Healthy")))
+
+TestX_smote <- dplyr::select(smote_data, -Group)
+TestY_smote <- smote_data$Group
+
+# Predictions on SMOTE data
+pred1_smote <- predict(fit1, newdata = TestX_smote, type = "prob")
+pred2_smote <- predict(fit2, newdata = TestX_smote, type = "prob")
+pred3_smote <- predict(fit3, newdata = TestX_smote, type = "prob")
+
+roc1_smote <- pROC::roc(response = TestY_smote, predictor = pred1_smote[, 2])
+roc2_smote <- pROC::roc(response = TestY_smote, predictor = pred2_smote[, 2])
+roc3_smote <- pROC::roc(response = TestY_smote, predictor = pred3_smote[, 2])
+
+# --- 12. Figure SM4: ROC Curves on SMOTE Data ---------------------------------
+pdf(file = file.path(out_dir, "Figure_SM4_ROC_SMOTE.pdf"), width = 7, height = 7)
+plot(roc1_smote, print.auc = TRUE, grid = TRUE, legacy.axes = FALSE, bty = "l", col = "#00A087", print.auc.x = 0.75, print.auc.y = 0.45)
+plot(roc2_smote, print.auc = TRUE, add = TRUE, col = "#4DBBD5", print.auc.x = 0.68, print.auc.y = 0.78)
+plot(roc3_smote, print.auc = TRUE, add = TRUE, col = "#E64B35", print.auc.x = 0.42, print.auc.y = 0.92)
+legend("bottomright", legend = c("Model1 (Boruta)", "Model2 (findLinearCombos+Boruta)", "Model3 (s__GGB51647_SGB4348)"), col = c("#00A087", "#4DBBD5", "#E64B35"), lwd = 2, bg = "white", cex = 0.9)
+dev.off()
+
+# --- 13. Figure SM3b: PR Curves on SMOTE Data ---------------------------------
+pred_obj1_smote <- prediction(pred1_smote[, 2], TestY_smote)
+pred_obj2_smote <- prediction(pred2_smote[, 2], TestY_smote)
+pred_obj3_smote <- prediction(pred3_smote[, 2], TestY_smote)
+
+prc1_smote <- performance(pred_obj1_smote, measure = "prec", x.measure = "rec")
+prc2_smote <- performance(pred_obj2_smote, measure = "prec", x.measure = "rec")
+prc3_smote <- performance(pred_obj3_smote, measure = "prec", x.measure = "rec")
+
+aucpr1_smote <- performance(pred_obj1_smote, measure = "aucpr")@y.values[[1]]
+aucpr2_smote <- performance(pred_obj2_smote, measure = "aucpr")@y.values[[1]]
+aucpr3_smote <- performance(pred_obj3_smote, measure = "aucpr")@y.values[[1]]
+
+pdf(file = file.path(out_dir, "Figure_SM3b_PRC_SMOTE.pdf"), width = 7, height = 7)
+plot(prc1_smote, main = "PR Curve (SMOTE Balanced Set)", ylim = c(0, 1), xlab = "Recall", ylab = "Precision", col = "#00A087", lwd = 2)
+plot(prc2_smote, add = TRUE, col = "#4DBBD5", lwd = 2)
+plot(prc3_smote, add = TRUE, col = "#E64B35", lwd = 2)
+legend("bottomleft", legend = c(paste0("Model1 (PR-AUC: ", round(aucpr1_smote, 2), ")"), paste0("Model2 (PR-AUC: ", round(aucpr2_smote, 2), ")"), paste0("Model3 (PR-AUC: ", round(aucpr3_smote, 2), ")")), col = c("#00A087", "#4DBBD5", "#E64B35"), lwd = 2, bg = "white")
+dev.off()
+
+# --- 14. Table SM2: PR-AUC Comparison Export ----------------------------------
+Table_SM2 <- data.frame(
+    Metric = c("PR-AUC (original validation set)", "PR-AUC (SMOTE-balanced set)"),
+    Model_1_Boruta = c(round(aucpr1, 2), round(aucpr1_smote, 2)),
+    Model_2_LinearCombosBoruta = c(round(aucpr2, 2), round(aucpr2_smote, 2)),
+    Model_3_SingleFeature = c(round(aucpr3, 2), round(aucpr3_smote, 2))
+)
+write.csv(Table_SM2, file.path(out_dir, "Table_SM2_PR_AUC_Comparison.csv"), row.names = FALSE)
+
+message("05_RandomForest_Classifier.R completed: Figures SM1-SM4 and Tables SM1-SM2 generated in outputs/RandomForest/")

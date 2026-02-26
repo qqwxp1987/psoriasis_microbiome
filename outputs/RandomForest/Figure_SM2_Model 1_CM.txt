@@ -1,0 +1,30 @@
+Confusion Matrix and Statistics
+
+           Reference
+Prediction  Healthy Psoriasis
+  Healthy         7        10
+  Psoriasis      10        60
+                                          
+               Accuracy : 0.7701          
+                 95% CI : (0.6675, 0.8536)
+    No Information Rate : 0.8046          
+    P-Value [Acc > NIR] : 0.829           
+                                          
+                  Kappa : 0.2689          
+                                          
+ Mcnemar's Test P-Value : 1.000           
+                                          
+            Sensitivity : 0.8571          
+            Specificity : 0.4118          
+         Pos Pred Value : 0.8571          
+         Neg Pred Value : 0.4118          
+              Precision : 0.8571          
+                 Recall : 0.8571          
+                     F1 : 0.8571          
+             Prevalence : 0.8046          
+         Detection Rate : 0.6897          
+   Detection Prevalence : 0.8046          
+      Balanced Accuracy : 0.6345          
+                                          
+       'Positive' Class : Psoriasis       
+                                          

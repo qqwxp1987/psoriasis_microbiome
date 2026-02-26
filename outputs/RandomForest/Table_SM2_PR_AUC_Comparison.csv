@@ -1,0 +1,3 @@
+"Metric","Model_1_Boruta","Model_2_LinearCombosBoruta","Model_3_SingleFeature"
+"PR-AUC (original validation set)",0.89,0.91,0.96
+"PR-AUC (SMOTE-balanced set)",0.68,0.76,0.81
