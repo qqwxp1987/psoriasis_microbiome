@@ -1,0 +1,144 @@
+	Disease	Family	Dataset	Sex	Age	WHR	Weight	Height	BMI	Smoke	Drink	BSA	PASI	VAS	Lymphocytes	CD4	CD8	FOXP3	IFNg	TNFalpha	IL-17	CD4FOXP3	CD4IL-17
+Control.A01	Healthy	A01	Train	Male	64	78	60	1.65	22.04	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A02	Healthy	A02	Train	Female	50	69	39.25	1.54	16.55	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A03	Healthy	A03	Train	Female	45	85	52.5	1.5	23.33	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A04	Healthy	A04	Train	Female	46	27	55	1.55	22.89	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A05	Healthy	A05	Train	Female	36	84	51.5	1.65	18.92	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A06	Healthy	A06	Train	Female	55	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A07	Healthy	A07	Train	Male	22	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A08	Healthy	A08	Train	Female	32	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A09	Healthy	A09	Train	Female	64	80	55	1.56	22.6	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A10	Healthy	A10	Train	Female	33	72	55	1.67	19.72	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A11	Healthy	A11	Train	Female	35	78	63	1.58	25.24	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A12	Healthy	A12	Train	Female	57	80	60	1.59	23.73	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A13	Healthy	A13	Train	Female	32	70	55	1.7	19.03	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A14	Healthy	A14	Train	Female	50	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A15	Healthy	A15	Train	Male	65	92	70	1.66	25.4	Y	Y	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A16	Healthy	A16	Train	Female	32	70	45	1.6	17.58	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A17	Healthy	A17	Train	Male	33	90	63	1.73	21.05	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A18	Healthy	A18	Train	Female	27	89	65	1.52	28.13	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A19	Healthy	A19	Train	Male	65	90	67.5	1.58	27.04	N	Y	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A20	Healthy	A20	Train	Male	50	90	68	1.7	23.53	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A21	Healthy	A21	Train	Female	66	78	60	1.63	22.58	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A22	Healthy	A22	Train	Female	54	78	50	1.6	19.53	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A23	Healthy	A23	Train	Female	32	80	52.5	1.59	20.77	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A24	Healthy	A24	Train	Female	57	60	40	1.52	17.31	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A25	Healthy	A25	Train	Female	36	62	46	1.56	18.9	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A26	Healthy	A26	Train	Male	33	100	75	1.76	24.21	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A27	Healthy	A27	Train	Female	44	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.A28	Healthy	A28	Train	Female	53	98	65	1.63	24.46	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C01	Healthy	C01	Validate	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C02	Healthy	C02	Validate	Female	55	70	46	1.53	19.65	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C03	Healthy	C03	Validate	Male	39	88	85	1.7	29.41	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C04	Healthy	C04	Validate	Male	22	82	57	1.68	20.2	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C05	Healthy	C05	Validate	Male	20	83	63	1.82	19.02	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C06	Healthy	C06	Validate	Female	63	69	42.5	1.55	17.69	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C07	Healthy	C07	Validate	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C08	Healthy	C08	Validate	Female	26	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C09	Healthy	C09	Validate	Female	46	80	54	1.6	21.09	N	Y	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C10	Healthy	C10	Validate	Female	40	78	62.5	1.6	24.41	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C11	Healthy	C11	Validate	Female	32	72	52	1.52	22.51	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C12	Healthy	C12	Validate	Female	35	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C13	Healthy	C13	Validate	Male	34	96	70	1.66	25.4	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C14	Healthy	C14	Validate	Female	65	88	55	1.5	24.44	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C15	Healthy	C15	Validate	Male	56	78	53	1.7	18.34	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C17	Healthy	C17	Validate	Female	29	78	63	1.7	21.8	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+Control.C18	Healthy	C18	Validate	Male	27	75	57.5	1.76	18.56	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.A01	Psoriasis	A01	Train	Female	62	98	75	1.58	30.04	N	N	2.9	3.8	1.1	70	41.8	22.5	0.39	17.8	31.8	1.93	16.302	80.674
+PsO.A02	Psoriasis	A02	Train	Male	48	96.5	78	1.69	27.31	Y	N	1.8	3.9	4.1	47.5	36.2	42.7	0.21	11.9	20	2.59	7.602	93.758
+PsO.A03	Psoriasis	A03	Train	Male	44	106	89	1.7	30.8	Y	N	1.6	3	3.9	NA	NA	NA	NA	NA	NA	NA		
+PsO.A04	Psoriasis	A04	Train	Male	48	91	58	1.72	19.61	N	N	7.3	7.8	8.7	71.6	40	36.4	0.15	NA	NA	NA	6	NA
+PsO.A05	Psoriasis	A05	Train	Male	35	89	78	1.74	25.76	N	Y	4.1	5.7	0.9	64.1	37.9	21.4	0.24	7.6	17.8	5.4	9.096	204.66
+PsO.A06	Psoriasis	A06	Train	Male	61	93	69	1.76	22.28	N	N	7.3	5.6	8.6	NA	NA	NA	NA	NA	NA	NA		
+PsO.A07	Psoriasis	A07	Train	Male	27	100	80	1.65	29.38	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.A08	Psoriasis	A08	Train	Female	27	60	38.5	1.62	14.67	N	N	1	1.4	1.3	NA	NA	NA	NA	NA	NA	NA		
+PsO.A09	Psoriasis	A09	Train	Male	64	89	76	1.64	28.26	Y	N	4.5	5.1	0.09	70.6	46	23.7	0.14	8.7	14	1.36	6.44	62.56
+PsO.A10	Psoriasis	A10	Train	Male	30	91	71	1.69	24.86	N	N	2.95	3.5	3.2	NA	NA	NA	NA	NA	NA	NA		
+PsO.A11	Psoriasis	A11	Train	Male	35	94	75	1.68	26.57	N	N	5.7	5.8	2.4	NA	NA	NA	NA	18.1	26.8	1.29		
+PsO.A12	Psoriasis	A12	Train	Male	20	80.5	65	1.69	22.76	Y	N	1.5	4.3	5	60.5	33.4	32	0.32	8.61	13.7	1.85	10.688	61.79
+PsO.A13	Psoriasis	A13	Train	Male	32	88	72	1.81	21.98	N	N	0.7	1.6	0.3	NA	NA	NA	NA	NA	NA	NA		
+PsO.A14	Psoriasis	A14	Train	Male	61	100	85	1.7	29.41	Y	Y	5.8	6.3	1.5	NA	NA	NA	NA	NA	NA	NA		
+PsO.A15	Psoriasis	A15	Train	Female	63	115	80	1.63	30.11	N	N	21	8.8	6.6	NA	NA	NA	NA	NA	NA	NA		
+PsO.A16	Psoriasis	A16	Train	Male	35	77.5	55	1.6	21.48	Y	Y	8.7	6.7	2	NA	NA	NA	NA	NA	NA	NA		
+PsO.A17	Psoriasis	A17	Train	Female	33	NA	48	1.6	18.75	N	N	5.1	3.2	6.6	NA	NA	NA	NA	NA	NA	NA		
+PsO.A18	Psoriasis	A18	Train	Male	30	88	57.5	1.65	21.12	N	N	9.5	7.2	2.1	NA	NA	NA	NA	NA	NA	NA		
+PsO.A19	Psoriasis	A19	Train	Female	59	77	50	1.58	20.03	N	N	1.2	1	2.9	NA	NA	NA	NA	NA	NA	NA		
+PsO.A20	Psoriasis	A20	Train	Female	48	78	58	1.64	21.56	N	Y	3.7	3.6	0.1	NA	NA	NA	NA	NA	NA	NA		
+PsO.A21	Psoriasis	A21	Train	Male	29	96	80	1.77	25.54	Y	Y	6	5.5	4.8	50	32.7	36.2	0.23	9.73	14.5	2.28	7.521	74.556
+PsO.A22	Psoriasis	A22	Train	Male	54	88.5	66	1.62	25.15	N	N	6.3	5.1	7.1	NA	NA	NA	NA	NA	NA	NA		
+PsO.A23	Psoriasis	A23	Train	Male	39	89	70	1.66	25.4	Y	Y	4.7	5.4	3.3	NA	NA	NA	NA	NA	NA	NA		
+PsO.A24	Psoriasis	A24	Train	Female	25	74	46	1.6	17.97	N	N	1.9	3.8	8.1	NA	NA	NA	NA	NA	NA	NA		
+PsO.A25	Psoriasis	A25	Train	Male	40	92	84	1.68	29.76	Y	N	6.5	7.8	3.9	NA	NA	NA	NA	NA	NA	NA		
+PsO.A26	Psoriasis	A26	Train	Female	31	92	68	1.58	27.24	N	N	4.2	4.6	2.9	66.8	38.6	23.2	0.19	9.57	18.9	54.8	7.334	2115.28
+PsO.A27	Psoriasis	A27	Train	Male	48	89	73	1.75	23.84	N	N	4.4	3.7	6.8	NA	NA	NA	NA	NA	NA	NA		
+PsO.A28	Psoriasis	A28	Train	Male	53	89	72	1.7	24.91	Y	Y	6.7	7.2	5.4	NA	NA	NA	NA	NA	NA	NA		
+PsO.C03	Psoriasis	C03	Validate	Male	31	92	70	1.69	24.51	Y	N	2.6	5.3	2.9	NA	NA	NA	NA	NA	NA	NA		
+PsO.C04	Psoriasis	C04	Validate	Male	35	80	61	1.65	22.41	N	N	1.2	3.8	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C05	Psoriasis	C05	Validate	Male	63	92	80	1.78	25.25	N	N	12	8.1	3.9	NA	NA	NA	NA	NA	NA	NA		
+PsO.C06	Psoriasis	C06	Validate	Male	35	88	72	1.72	24.34	N	Y	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C07	Psoriasis	C07	Validate	Female	18	86	53	1.6	20.7	N	N	3.1	4.1	2.6	NA	NA	NA	NA	NA	NA	NA		
+PsO.C08	Psoriasis	C08	Validate	Female	41	85	58	1.56	23.83	N	N	2.9	4.7	5	NA	NA	NA	NA	NA	NA	NA		
+PsO.C09	Psoriasis	C09	Validate	Male	35	87	63	1.7	21.8	N	N	6.9	9.4	3	60.7	41.7	31.3	0.23	11.1	15.2	2.15	9.591	89.655
+PsO.C10	Psoriasis	C10	Validate	Male	33	86	73	1.7	25.26	N	Y	0.8	3.4	4.2	NA	NA	NA	NA	NA	NA	NA		
+PsO.C11	Psoriasis	C11	Validate	Female	24	66.3	46	1.58	18.43	N	N	5.5	3.2	2	74.4	35.5	42.6	0.21	NA	NA	NA	7.455	NA
+PsO.C12	Psoriasis	C12	Validate	Male	37	NA	75	1.72	25.35	N	Y	16.9	8.7	7.1	NA	NA	NA	NA	NA	NA	NA		
+PsO.C14	Psoriasis	C14	Validate	Male	31	89	65	1.7	22.49	N	N	5	4.7	1.1	NA	NA	NA	NA	NA	NA	NA		
+PsO.C15	Psoriasis	C15	Validate	Male	32	84	67	1.7	23.18	N	N	3.2	4	2.3	71.3	34	24.7	0.13	7.07	12.4	5.47	4.42	185.98
+PsO.C16	Psoriasis	C16	Validate	Male	34	74.4	58	1.65	21.3	N	Y	8.7	6.1	0.6	64	37.6	43.6	0.27	27.1	41.5	1.97	10.152	74.072
+PsO.C17	Psoriasis	C17	Validate	Male	51	123	100	1.7	34.6	Y	Y	6.4	6.6	7.2	70.2	43.4	22.3	0.15	5.45	14	1.93	6.51	83.762
+PsO.C18	Psoriasis	C18	Validate	Male	32	90	65	1.74	21.47	N	N	10.8	9.8	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C19	Psoriasis	C19	Validate	Female	25	78	53	1.55	22.06	N	N	2.6	2.3	2.5	NA	NA	NA	NA	NA	NA	NA		
+PsO.C20	Psoriasis	C20	Validate	Female	47	100	75	1.62	28.58	N	N	NA	NA	NA	66.2	39.7	29.7	0.21	18.1	28.8	0.89	8.337	35.333
+PsO.C21	Psoriasis	C21	Validate	Male	27	63.5	46	1.7	15.92	Y	Y	7.6	8	4.6	NA	NA	NA	NA	NA	NA	NA		
+PsO.C22	Psoriasis	C22	Validate	Male	27	92	72	1.72	24.34	N	N	3.8	4.5	3	NA	NA	NA	NA	NA	NA	NA		
+PsO.C23	Psoriasis	C23	Validate	Male	39	90	70	1.69	24.51	N	N	3.8	3.2	1.2	NA	NA	NA	NA	NA	NA	NA		
+PsO.C24	Psoriasis	C24	Validate	Female	29	76	55	1.58	22.03	N	N	5	3.8	1.8	67.1	37.4	26.4	0.072	7.99	16.4	1.27	2.6928	47.498
+PsO.C25	Psoriasis	C25	Validate	Male	37	98	75	1.7	25.95	Y	N	0.5	2	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C26	Psoriasis	C26	Validate	Male	48	86	64	1.69	22.41	Y	Y	10.1	6.5	2.4	NA	NA	NA	NA	NA	NA	NA		
+PsO.C27	Psoriasis	C27	Validate	Female	25	75	51	1.56	20.96	N	N	9.5	5.1	3.5	NA	NA	NA	NA	NA	NA	NA		
+PsO.C28	Psoriasis	C28	Validate	Male	48	90	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C29	Psoriasis	C29	Validate	Male	36	NA	60	1.6	23.44	N	N	5.1	5.1	2.2	71.1	33.8	26.3	1.19	6.36	13.6	1.4	40.222	47.32
+PsO.C30	Psoriasis	C30	Validate	Male	19	84	86	1.77	27.45	N	N	6.6	4.5	7	44.9	30.6	17.9	0.12	7.05	10.9	4.3	3.672	131.58
+PsO.C31	Psoriasis	C31	Validate	Male	31	90	70	1.65	25.71	Y	N	5.6	4.1	3.5	69	45.8	33.4	0.12	12.8	20.8	4.14	5.496	189.612
+PsO.C32	Psoriasis	C32	Validate	Male	32	81	61	1.72	20.62	Y	N	7.3	4.8	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C33	Psoriasis	C33	Validate	Male	37	86	65	1.65	23.88	N	N	6.4	3.7	2.4	NA	NA	NA	NA	NA	NA	NA		
+PsO.C34	Psoriasis	C34	Validate	Male	61	80	54	1.69	18.91	N	N	6.9	6.6	4.9	NA	NA	NA	NA	NA	NA	NA		
+PsO.C35	Psoriasis	C35	Validate	Female	18	84	65	1.6	25.39	N	N	14.7	4.7	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C36	Psoriasis	C36	Validate	Male	52	97	80	1.7	27.68	N	N	9.1	8.4	4.6	NA	NA	NA	NA	NA	NA	NA		
+PsO.C37	Psoriasis	C37	Validate	Male	46	84	70	1.7	24.22	N	N	3.1	5.1	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C38	Psoriasis	C38	Validate	Female	23	85	65	1.68	23.03	N	N	3.9	4.2	4.3	NA	NA	NA	NA	NA	NA	NA		
+PsO.C39	Psoriasis	C39	Validate	Male	19	88	68	1.69	23.81	N	N	45	4.6	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C40	Psoriasis	C40	Validate	Male	54	93	86	1.78	27.14	N	N	11.2	5.4	3.9	NA	NA	NA	NA	NA	NA	NA		
+PsO.C41	Psoriasis	C41	Validate	Male	59	82	54	1.65	19.83	N	N	7.2	6.4	2.7	67.9	36	34.6	0.19	14.2	24.9	1.28	6.84	46.08
+PsO.C42	Psoriasis	C42	Validate	Male	39	81	51	1.66	18.51	N	N	11.3	8.8	3.2	NA	NA	NA	NA	NA	NA	NA		
+PsO.C43	Psoriasis	C43	Validate	Female	53	70	41	1.58	16.42	N	N	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C44	Psoriasis	C44	Validate	Male	19	80	130	1.76	41.97	N	N	10.5	6.4	7.5	NA	NA	NA	NA	NA	NA	NA		
+PsO.C45	Psoriasis	C45	Validate	Male	32	85	65	1.68	23.03	N	N	9.6	6.1	1.7	NA	NA	NA	NA	NA	NA	NA		
+PsO.C46	Psoriasis	C46	Validate	Male	43	96	98	1.77	31.28	N	Y	3.4	4.5	5.6	64.5	39.7	18.9	0.2	7.8	23.5	2.15	7.94	85.355
+PsO.C47	Psoriasis	C47	Validate	Male	45	94	74	1.75	24.16	N	N	13.3	7.5	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C48	Psoriasis	C48	Validate	Male	47	92	75	1.73	25.06	Y	N	3	6	3.6	75.8	44.9	27.4	0.53	NA	NA	NA	23.797	NA
+PsO.C49	Psoriasis	C49	Validate	Female	54	83	53	1.53	22.64	N	N	3.7	6.4	6.9	55	32.4	31.7	4.57	11.5	18	4.59	148.068	148.716
+PsO.C50	Psoriasis	C50	Validate	Male	41	98	75	1.63	28.23	N	N	67.2	22	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C51	Psoriasis	C51	Validate	Male	20	89.4	68	1.8	20.99	N	N	11	7.2	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C52	Psoriasis	C52	Validate	Male	40	76	55	1.6	21.48	Y	Y	6.3	5.8	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C53	Psoriasis	C53	Validate	Male	37	92	74	1.78	23.36	Y	Y	15.5	17.6	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C54	Psoriasis	C54	Validate	Female	36	84	60	1.54	25.3	N	N	7	7	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C55	Psoriasis	C55	Validate	Male	51	73	52.5	1.67	18.82	N	N	7.5	5.9	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C56	Psoriasis	C56	Validate	Male	30	93.5	66	1.68	23.38	N	Y	4.3	5.4	4.9	52.2	28.5	19.9	0.29	NA	NA	NA	8.265	NA
+PsO.C57	Psoriasis	C57	Validate	Female	37	92	66	1.62	25.15	Y	Y	4.3	5.4	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C58	Psoriasis	C58	Validate	Male	37	93	65	1.61	25.08	Y	N	5.9	7	2.8	68.3	41.5	23.2	0.37	8.82	22	1.38	15.355	57.27
+PsO.C59	Psoriasis	C59	Validate	Male	43	86	57	1.64	21.19	Y	N	13.5	12	3.6	NA	NA	NA	NA	NA	NA	NA		
+PsO.C60	Psoriasis	C60	Validate	Female	25	90	60	1.6	23.44	N	N	7.7	7.8	4.9	NA	NA	NA	NA	NA	NA	NA		
+PsO.C61	Psoriasis	C61	Validate	Female	34	80	NA	NA	NA	NA	NA	7.3	6.1	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C62	Psoriasis	C62	Validate	Male	59	84	60	1.7	20.76	Y	N	61.8	27	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C63	Psoriasis	C63	Validate	Male	39	91	74	1.74	24.44	N	N	6	4.6	3.1	54	42.5	35.3	0.16	22.1	26.4	2.12	6.8	90.1
+PsO.C64	Psoriasis	C64	Validate	Male	24	97	80	1.74	26.42	Y	N	15.7	15.6	6.6	NA	NA	NA	NA	NA	NA	NA		
+PsO.C65	Psoriasis	C65	Validate	Male	39	102	90	1.74	29.73	N	Y	44.5	25.7	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C66	Psoriasis	C66	Validate	Female	27	83	58	1.6	22.66	N	N	15.8	10.2	7.1	NA	NA	NA	NA	NA	NA	NA		
+PsO.C67	Psoriasis	C67	Validate	Male	32	85	65	1.68	23.03	N	N	9.6	6.1	1.6	NA	NA	NA	NA	NA	NA	NA		
+PsO.C68	Psoriasis	C68	Validate	Male	48	87	70	1.72	23.66	N	N	5.5	4.4	0	NA	NA	NA	NA	NA	NA	NA		
+PsO.C69	Psoriasis	C69	Validate	Male	63	92	70	1.69	24.51	N	Y	1.6	3.9	0.5	NA	NA	NA	NA	NA	NA	NA		
+PsO.C70	Psoriasis	C70	Validate	Male	26	94	70	1.68	24.8	N	N	9.4	8.7	1.8	NA	NA	NA	NA	NA	NA	NA		
+PsO.C71	Psoriasis	C71	Validate	Male	35	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C72	Psoriasis	C72	Validate	Male	60	86	56.5	1.65	20.75	Y	N	12.1	13.2	NA	NA	NA	NA	NA	NA	NA	NA		
+PsO.C73	Psoriasis	C73	Validate	Female	60	76	52	1.55	21.64	N	N	3.7	2.4	NA	NA	NA	NA	NA	NA	NA	NA		
