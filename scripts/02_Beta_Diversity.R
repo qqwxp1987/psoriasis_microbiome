@@ -24,7 +24,7 @@ library(ape)
 library(reshape2)
 library(phyloseq)
 library(ggplot2)
-library(gghalves)
+# library(gghalves)  # removed due to ggplot2 v4.5+ incompatibility
 library(patchwork)
 
 # --- 1. Data loading ----------------------------------------------------------
@@ -59,6 +59,7 @@ adonis_result <- adonis2(
     by = "margin",
     distance = "bray"
 )
+dir.create(here("outputs", "beta_diversity"), recursive = TRUE, showWarnings = FALSE)
 write.csv(adonis_result,
     file = here("outputs", "beta_diversity", "PERMANOVA_res.csv"),
     quote = FALSE, na = ""
@@ -144,15 +145,13 @@ pal <- c("#8b4d73", "#4760a3", "#8a6f8c")
 
 p_beta <- data_subset %>%
     ggplot(aes(x = Group, y = BC)) +
-    geom_half_violin(aes(fill = Group), side = "r", nudge = 0.15) +
-    geom_half_boxplot(aes(fill = Group),
-        errorbar.draw = FALSE, center = TRUE,
-        width = 0.1, nudge = -0.1
-    ) +
+    geom_violin(aes(fill = Group), alpha = 0.35, color = NA) +
+    geom_boxplot(aes(fill = Group), width = 0.15, outlier.shape = NA) +
     scale_fill_manual(values = pal, guide = "none") +
+    labs(y = "Bray-Curtis Distance") +
     theme_classic()
 
-ggsave(here("outputs", "beta_diversity", "Figure1B.pdf"), plot = p_beta)
+ggsave(here("outputs", "beta_diversity", "beta_diversity_BC_boxplot.pdf"), plot = p_beta)
 
 # --- 7. Hierarchical clustering dendrogram + stacked barplot (Figure 1a) ------
 library(ggtree)
@@ -248,6 +247,6 @@ p2 <- facet_plot(p1,
     scale_fill_manual(values = color)
 
 ggsave(p2,
-    filename = here("outputs", "beta_diversity", "phylum_grp_cluster_bar_tree.pdf"),
+    filename = here("outputs", "beta_diversity", "beta_diversity_cluster_barplot.pdf"),
     width = 25, height = 6
 )
