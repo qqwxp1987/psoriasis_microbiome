@@ -1,0 +1,48 @@
+2026-02-26 20:07:04.268944 INFO::Writing function arguments to log file
+2026-02-26 20:07:04.27 DEBUG::Function arguments
+2026-02-26 20:07:04.270481 DEBUG::Output folder: C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel
+2026-02-26 20:07:04.270855 DEBUG::Min Abundance: 0.000000
+2026-02-26 20:07:04.271233 DEBUG::Min Prevalence: 0.100000
+2026-02-26 20:07:04.271566 DEBUG::Normalization: NONE
+2026-02-26 20:07:04.271925 DEBUG::Transform: NONE
+2026-02-26 20:07:04.272293 DEBUG::Analysis method: LM
+2026-02-26 20:07:04.272744 DEBUG::Max significance: 0.050000
+2026-02-26 20:07:04.274473 DEBUG::Random effects: Family
+2026-02-26 20:07:04.27499 DEBUG::Fixed effects: Gender,BMI,Group
+2026-02-26 20:07:04.275409 DEBUG::Correction method: BH
+2026-02-26 20:07:04.275819 DEBUG::Standardize: FALSE
+2026-02-26 20:07:04.276208 DEBUG::Cores: 8
+2026-02-26 20:07:04.276559 INFO::Verifying options selected are valid
+2026-02-26 20:07:04.277421 INFO::Determining format of input files
+2026-02-26 20:07:04.278204 INFO::Input format is data samples as rows and metadata samples as rows
+2026-02-26 20:07:04.279065 DEBUG::The following samples were found to have features but no metadata. They will be removed. Control.C01,Control.C02,Control.C03,Control.C04,Control.C05,Control.C06,Control.C07,Control.C08,Control.C09,Control.C10,Control.C11,Control.C12,Control.C13,Control.C14,Control.C15,Control.C17,Control.C18
+2026-02-26 20:07:04.279549 DEBUG::A total of 126 samples were found in both the data and metadata
+2026-02-26 20:07:04.2799 DEBUG::Reordering data/metadata to use same sample ordering
+2026-02-26 20:07:04.280525 INFO::Formula for random effects: expr ~ (1 | Family)
+2026-02-26 20:07:04.281537 INFO::Formula for fixed effects: expr ~  Gender + BMI + Group
+2026-02-26 20:07:04.282538 INFO::Factor detected for categorial metadata 'Gender'. Provide a reference argument or manually set factor ordering to change reference level.
+2026-02-26 20:07:04.283287 INFO::Factor detected for categorial metadata 'Group'. Provide a reference argument or manually set factor ordering to change reference level.
+2026-02-26 20:07:04.283952 INFO::Filter data based on min abundance and min prevalence
+2026-02-26 20:07:04.284686 INFO::Total samples in data: 126
+2026-02-26 20:07:04.285289 INFO::Min samples required with min abundance for a feature not to be filtered: 12.600000
+2026-02-26 20:07:04.286058 INFO::Total filtered features: 0
+2026-02-26 20:07:04.286824 INFO::Filtered feature names from abundance and prevalence filtering:
+2026-02-26 20:07:04.287956 INFO::Total filtered features with variance filtering: 0
+2026-02-26 20:07:04.288737 INFO::Filtered feature names from variance filtering:
+2026-02-26 20:07:04.289644 INFO::Running selected normalization method: NONE
+2026-02-26 20:07:04.290346 INFO::Bypass z-score application to metadata
+2026-02-26 20:07:04.291079 INFO::Running selected transform method: NONE
+2026-02-26 20:07:04.291768 INFO::Running selected analysis method: LM
+2026-02-26 20:07:04.292727 INFO::Creating cluster of 8 R processes
+2026-02-26 20:07:06.055004 INFO::Counting total values for each feature
+2026-02-26 20:07:06.056996 INFO::Writing filtered data to file C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/features/filtered_data.tsv
+2026-02-26 20:07:06.059538 INFO::Writing filtered, normalized data to file C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/features/filtered_data_norm.tsv
+2026-02-26 20:07:06.061756 INFO::Writing filtered, normalized, transformed data to file C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/features/filtered_data_norm_transformed.tsv
+2026-02-26 20:07:06.064325 WARNING::Deleting existing residuals file: C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/fits/residuals.rds
+2026-02-26 20:07:06.065692 INFO::Writing residuals to file C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/fits/residuals.rds
+2026-02-26 20:07:06.067028 WARNING::Deleting existing fitted file: C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/fits/fitted.rds
+2026-02-26 20:07:06.068214 INFO::Writing fitted values to file C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/fits/fitted.rds
+2026-02-26 20:07:06.069389 WARNING::Deleting existing ranef file: C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/fits/ranef.rds
+2026-02-26 20:07:06.070624 INFO::Writing extracted random effects to file C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/fits/ranef.rds
+2026-02-26 20:07:06.07196 INFO::Writing all results to file (ordered by increasing q-values): C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/all_results.tsv
+2026-02-26 20:07:06.073653 INFO::Writing the significant results (those which are less than or equal to the threshold of 0.050000 ) to file (ordered by increasing q-values): C:/Users/qqwxp/OneDrive/Work/银屑病/宏基因组横断面分析/Manuscript/2024后版本/Manuscript_v12_Journal_of_Translational_Medicine/Feedback_2nd/CodeAvailiable/outputs/alpha_diversity/Maaslin/98Pso_vs_28Rel/significant_results.tsv

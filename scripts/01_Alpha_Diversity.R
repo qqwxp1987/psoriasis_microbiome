@@ -51,6 +51,7 @@ alpha_meta$Gender <- as.factor(alpha_meta$Gender)
 
 # --- 4. MaAsLin2: Three-group overall comparison -----------------------------
 #   Adjusts for Gender and BMI as fixed effects, Family as random effect
+dir.create(here("outputs", "alpha_diversity", "Maaslin", "All_samples"), recursive = TRUE, showWarnings = FALSE)
 Maaslin2(
     input_data = alpha_tab,
     input_metadata = alpha_meta,
@@ -77,6 +78,7 @@ Maaslin2(
 
 ## 5a. Control vs Psoriasis
 input_meta_cp <- alpha_meta %>% dplyr::filter(Group != "Relatives")
+dir.create(here("outputs", "alpha_diversity", "Maaslin", "98Pso_vs_17Con"), recursive = TRUE, showWarnings = FALSE)
 Maaslin2(
     input_data = alpha_tab,
     input_metadata = input_meta_cp,
@@ -101,6 +103,7 @@ Maaslin2(
 
 ## 5b. Relatives vs Psoriasis
 input_meta_rp <- alpha_meta %>% dplyr::filter(Group != "Control")
+dir.create(here("outputs", "alpha_diversity", "Maaslin", "98Pso_vs_28Rel"), recursive = TRUE, showWarnings = FALSE)
 Maaslin2(
     input_data = alpha_tab,
     input_metadata = input_meta_rp,
@@ -125,6 +128,7 @@ Maaslin2(
 
 ## 5c. Control vs Relatives
 input_meta_cr <- alpha_meta %>% dplyr::filter(Group != "Psoriasis")
+dir.create(here("outputs", "alpha_diversity", "Maaslin", "28Rel_vs_17Con"), recursive = TRUE, showWarnings = FALSE)
 Maaslin2(
     input_data = alpha_tab,
     input_metadata = input_meta_cr,
@@ -147,15 +151,15 @@ Maaslin2(
     reference = NULL
 )
 
-# --- 6. Visualization: Half-violin + boxplot (Figure 1d) ---------------------
-ordercolors <- c("indianred", "darkslateblue", "steelblue")
+# --- 6. Visualization: violin + boxplot + jitter (Figure 1d) ------------------
+ordercolors <- c("indianred", "steelblue", "darkslateblue")
 pld <- cbind(alpha_meta, alpha_tab)
 
 # Shannon index
 psh <- ggplot(data = pld, aes(x = Group, y = shannon, fill = Group)) +
-    geom_half_violin(side = "r", color = NA, alpha = 0.35) +
-    geom_half_boxplot(side = "r", errorbar.draw = FALSE, width = 0.2, linewidth = 0.5) +
-    geom_half_point_panel(side = "l", shape = 21, size = 3, color = "white") +
+    geom_violin(alpha = 0.35, color = NA) +
+    geom_boxplot(width = 0.2, linewidth = 0.5, outlier.shape = NA) +
+    geom_jitter(shape = 21, size = 2, color = "white", width = 0.1) +
     scale_fill_manual(values = ordercolors) +
     labs(y = "Shannon Index", x = NULL) +
     theme_classic() +
@@ -167,9 +171,9 @@ psh <- ggplot(data = pld, aes(x = Group, y = shannon, fill = Group)) +
 
 # Pielou evenness index
 ppi <- ggplot(data = pld, aes(x = Group, y = pielou, fill = Group)) +
-    geom_half_violin(side = "r", color = NA, alpha = 0.35) +
-    geom_half_boxplot(side = "r", errorbar.draw = FALSE, width = 0.2, linewidth = 0.5) +
-    geom_half_point_panel(side = "l", shape = 21, size = 3, color = "white") +
+    geom_violin(alpha = 0.35, color = NA) +
+    geom_boxplot(width = 0.2, linewidth = 0.5, outlier.shape = NA) +
+    geom_jitter(shape = 21, size = 2, color = "white", width = 0.1) +
     scale_fill_manual(values = ordercolors) +
     labs(y = "Pielou Index", x = NULL) +
     theme_classic() +
@@ -180,7 +184,8 @@ ppi <- ggplot(data = pld, aes(x = Group, y = pielou, fill = Group)) +
     )
 
 # Combine and save
+dir.create(here("outputs", "alpha_diversity"), recursive = TRUE, showWarnings = FALSE)
 ggsave(psh + ppi,
-    filename = here("outputs", "alpha_diversity", "Figure1d.pdf"),
+    filename = here("outputs", "alpha_diversity", "alpha_diversity_shannon_pielou.pdf"),
     width = 10, height = 8
 )
