@@ -27,7 +27,7 @@ library(ggnewscale)
 library(tibble)
 
 # --- 1. Data loading ----------------------------------------------------------
-ps0 <- readRDS(here("data", "clean", "metaphlan", "phyloseq_taxa_20240401.rds"))
+ps0 <- readRDS(here("data", "metaphlan", "phyloseq_taxa_20240401.rds"))
 
 # Assign group labels: Family_control for matched healthy relatives
 sample_data(ps0)$Group <- case_when(

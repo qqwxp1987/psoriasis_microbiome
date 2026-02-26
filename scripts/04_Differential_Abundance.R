@@ -35,7 +35,7 @@ library(ggplot2)
 # =============================================================================
 
 # --- 1.1 Data loading --------------------------------------------------------
-phylo.obj <- readRDS(here("data", "clean", "metaphlan", "phyloseq_taxa.rds"))
+phylo.obj <- readRDS(here("data", "metaphlan", "phyloseq_taxa.rds"))
 phylo28pairs.obj <- subset_samples(phylo.obj, Dataset == "Train")
 
 # --- 1.2 BMI imputation ------------------------------------------------------
@@ -111,7 +111,7 @@ write.csv(marker.profile, file = here("outputs", "microbiomeMarker", "LefsE_28pa
 # =============================================================================
 
 # --- 2.1 Data loading --------------------------------------------------------
-phylo.obj2 <- readRDS(here("data", "clean", "metaphlan", "phyloseq_taxa_20240401.rds"))
+phylo.obj2 <- readRDS(here("data", "metaphlan", "phyloseq_taxa_20240401.rds"))
 phylo28pairs.obj2 <- subset_samples(phylo.obj2, Dataset == "Train")
 
 # Convert to MicrobiomeStat object
@@ -217,8 +217,8 @@ fit_data3 <- Maaslin2(
 # =============================================================================
 
 # --- 4.1 Pathway LEfSe -------------------------------------------------------
-meta_28 <- rio::import(here("data", "clean", "metadata", "metadata_28pairs_20240528.txt"))
-path <- rio::import(here("data", "clean", "humann", "filter_path_20240401.tsv"))
+meta_28 <- rio::import(here("data", "metadata_28pairs_20240528.txt"))
+path <- rio::import(here("data", "humann", "filter_path_20240401.tsv"))
 path <- path %>% tibble::column_to_rownames("NAME")
 path <- path[-c(1, 2), ]
 
@@ -249,7 +249,7 @@ write.csv(subset_marker(res_path)@marker_table %>% as.matrix(),
 )
 
 # --- 4.2 KO LEfSe ------------------------------------------------------------
-KO <- rio::import(here("data", "clean", "humann", "filter_ko_relab_20240419.tsv"))
+KO <- rio::import(here("data", "humann", "filter_ko_relab_20240419.tsv"))
 KO <- KO %>% tibble::column_to_rownames("NAME")
 KO <- KO[-1, ]
 
@@ -309,10 +309,10 @@ library(gghalves)
 library(patchwork)
 library(reshape2)
 
-dirpath <- here("data", "clean", "humann")
+dirpath <- here("data", "humann")
 ko_rel <- read.delim(file.path(dirpath, "filter_ko_relab_20240419.tsv"), row.names = 1)
 ko_rel <- ko_rel[-1, ]
-meta_f4 <- read.delim(here("data", "clean", "metadata", "metadata_20240401.txt"), row.names = 1)
+meta_f4 <- read.delim(here("data", "metadata_20240401.txt"), row.names = 1)
 
 samp_incl <- meta_f4 %>%
     filter(Dataset == "Train") %>%
@@ -357,7 +357,7 @@ ggsave(KO_plot_col2,
 # PART 7: 8 differential species scatter plot (Figure 2c/2d)
 # =============================================================================
 
-phylo28p <- readRDS(here("data", "clean", "metaphlan", "phyloseq_taxa_20240401.rds"))
+phylo28p <- readRDS(here("data", "metaphlan", "phyloseq_taxa_20240401.rds"))
 phylo28p <- subset_samples(phylo28p, Dataset == "Train")
 
 input_data7 <- phylo28p@otu_table@.Data %>% as.data.frame()
