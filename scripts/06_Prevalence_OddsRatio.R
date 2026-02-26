@@ -1,20 +1,3 @@
-###############################################################################
-# 06_Prevalence_OddsRatio.R
-# Prevalence analysis for Fimenecus sp000432435 (s__GGB51647_SGB4348)
-# - Detection rate comparison across Pso, RC, HC groups
-# - Fisher's exact test (overall + pairwise)
-# - Odds Ratio, Sensitivity, Specificity, PPV, NPV
-# - Prevalence bar chart + waffle plot visualisation
-# - Non-zero abundance ANCOVA comparison
-#
-# Required input files:
-#   data/clean/metaphlan/phyloseq_taxa_20240401.rds
-#
-# Required R packages:
-#   here, phyloseq, dplyr, ggplot2, ggpubr, rstatix, patchwork,
-#   waffle, microbiomeMarker, emmeans
-###############################################################################
-
 # --- 0. Load libraries -------------------------------------------------------
 library(here)
 library(phyloseq)
@@ -23,11 +6,10 @@ library(ggplot2)
 library(ggpubr)
 library(rstatix)
 library(patchwork)
-library(waffle)
 library(emmeans)
 
 # --- 1. Data loading and preparation -----------------------------------------
-phylo.obj <- readRDS(here("data", "metaphlan", "phyloseq_taxa_20240401.rds"))
+phylo.obj <- readRDS(here("data", "metaphlan", "phyloseq_taxa.rds"))
 data.obj <- phylo.obj
 
 Species <- "k__Bacteria;p__Firmicutes;c__CFGB4806;o__OFGB4806;f__FGB4806;g__GGB51647;s__GGB51647_SGB4348"
@@ -124,40 +106,81 @@ barplot_prev <- ggplot(prevalence_data, aes(x = Group, y = Prevalence_Percent, f
     theme_classic() +
     theme(legend.position = "none")
 
+dir.create(here("outputs", "differential_abundance"), recursive = TRUE, showWarnings = FALSE)
 ggsave(barplot_prev,
     filename = here(
-        "outputs", "Differential",
+        "outputs", "differential_abundance",
         "Bartplot_Prevalence_s__GGB51647_SGB4348.pdf"
     )
 )
 
-# --- 5. Waffle chart ----------------------------------------------------------
+# --- 5. Custom ggplot2 Waffle chart (no waffle package dependency) --------------
+create_waffle <- function(counts, colors, title) {
+    # counts is a named vector, e.g. c("Present" = X, "Absent" = Y)
+    # Total should be roughly 100 (since % prevalence)
+    total <- sum(counts)
+    if (total == 0) {
+        return(ggplot() +
+            theme_void())
+    }
+
+    # Create the sequence of categories
+    # The original waffle plot rev() the counts.
+    categories <- rep(names(counts), counts)
+
+    # Pad or truncate to 100 to fit a 10x10 matrix (assuming round(counts) aligns)
+    # (Here we expect total == nrow of group)
+    # We will compute percentage and round to make 100 squares
+    percents <- round((counts / total) * 100)
+
+    # Adjust for rounding errors to ensure exactly 100 tiles
+    diff <- 100 - sum(percents)
+    if (diff != 0) percents[1] <- percents[1] + diff
+
+    cat_seq <- factor(rep(names(percents), percents), levels = names(colors))
+
+    # 10x10 grid (x and y coords)
+    df <- data.frame(
+        x = rep(1:10, each = 10),
+        y = rep(10:1, times = 10),
+        category = cat_seq
+    )
+
+    ggplot(df, aes(x = x, y = y, fill = category)) +
+        geom_tile(color = "white", linewidth = 1) +
+        coord_equal() +
+        scale_fill_manual(values = colors) +
+        labs(title = title) +
+        theme_void() +
+        theme(
+            legend.position = "none",
+            plot.title = element_text(hjust = 0.5, face = "bold", size = 12)
+        )
+}
+
 pso_counts <- contingency_table["Pso", ]
 rc_counts <- contingency_table["RC", ]
 hc_counts <- contingency_table["HC", ]
 
-pso_waffle <- waffle(rev(pso_counts),
-    rows = 10,
+pso_waffle <- create_waffle(rev(pso_counts),
     colors = c("Present" = "indianred", "Absent" = "grey90"),
     title = "Pso"
-) + theme(legend.position = "none")
-rc_waffle <- waffle(rev(rc_counts),
-    rows = 10,
+)
+rc_waffle <- create_waffle(rev(rc_counts),
     colors = c("Present" = "steelblue", "Absent" = "grey90"),
     title = "RC"
-) + theme(legend.position = "none")
-hc_waffle <- waffle(rev(hc_counts),
-    rows = 10,
+)
+hc_waffle <- create_waffle(rev(hc_counts),
     colors = c("Present" = "darkslateblue", "Absent" = "grey90"),
     title = "HC"
-) + theme(legend.position = "none")
+)
 
 plot_a_waffle <- (pso_waffle | rc_waffle | hc_waffle) +
     plot_annotation(title = "Prevalence of s__GGB51647_SGB4348")
 
 ggsave(plot_a_waffle,
     filename = here(
-        "outputs", "Differential",
+        "outputs", "differential_abundance",
         "Waffle_Prevalence_s__GGB51647_SGB4348.pdf"
     )
 )
@@ -175,4 +198,3 @@ print(anova(ancova_model))
 pairwise_ancova <- emmeans(ancova_model, pairwise ~ Group)
 cat("\nPairwise comparisons (adjusted for Gender and BMI):\n")
 print(pairwise_ancova$contrasts)
-
