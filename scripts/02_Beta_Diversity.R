@@ -11,7 +11,7 @@ library(ggplot2)
 library(patchwork)
 
 # --- 1. Data loading ----------------------------------------------------------
-data.obj <- readRDS(here("data", "metaphlan", "MicrobiomeData.rds"))
+data.obj <- readRDS(here("data", "processed", "MicrobiomeData.rds"))
 
 # --- 2. Metadata preparation with BMI imputation -----------------------------
 meta <- data.obj$meta.dat %>%
@@ -143,7 +143,7 @@ library(ggsci)
 library(scales)
 library(ggClusterNet)
 
-ps0 <- readRDS(here("data", "metaphlan", "phyloseq_taxa.rds"))
+ps0 <- readRDS(here("data", "processed", "phyloseq_taxa.rds"))
 
 # Assign Group labels
 ps <- ps0

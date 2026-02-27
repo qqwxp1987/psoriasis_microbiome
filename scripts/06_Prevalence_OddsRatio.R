@@ -9,7 +9,7 @@ library(patchwork)
 library(emmeans)
 
 # --- 1. Data loading and preparation -----------------------------------------
-phylo.obj <- readRDS(here("data", "metaphlan", "phyloseq_taxa.rds"))
+phylo.obj <- readRDS(here("data", "processed", "phyloseq_taxa.rds"))
 data.obj <- phylo.obj
 
 Species <- "k__Bacteria;p__Firmicutes;c__CFGB4806;o__OFGB4806;f__FGB4806;g__GGB51647;s__GGB51647_SGB4348"

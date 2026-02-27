@@ -8,7 +8,7 @@ library(gghalves)
 library(patchwork)
 
 # --- 1. Data loading ----------------------------------------------------------
-data.obj <- readRDS(here("data", "metaphlan", "MicrobiomeData.rds"))
+data.obj <- readRDS(here("data", "processed", "MicrobiomeData.rds"))
 
 # --- 2. Calculate alpha diversity indices -------------------------------------
 alpha.obj <- mStat_calculate_alpha_diversity(

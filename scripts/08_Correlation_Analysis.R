@@ -19,7 +19,7 @@ library(ppcor)
 library(dplyr)
 
 # --- 1. Data loading and normalisation ----------------------------------------
-phylo.obj <- readRDS(here("data", "metaphlan", "phyloseq_taxa.rds"))
+phylo.obj <- readRDS(here("data", "processed", "phyloseq_taxa.rds"))
 
 # Subset to psoriasis patients only
 pso.obj <- subset_samples(phylo.obj, Disease == "Psoriasis")

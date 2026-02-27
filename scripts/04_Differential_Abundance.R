@@ -13,7 +13,7 @@ library(ggplot2)
 # =============================================================================
 
 # --- 1.1 Data loading --------------------------------------------------------
-phylo.obj <- readRDS(here("data", "metaphlan", "phyloseq_taxa.rds"))
+phylo.obj <- readRDS(here("data", "processed", "phyloseq_taxa.rds"))
 phylo28pairs.obj <- subset_samples(phylo.obj, Dataset == "Train")
 
 # --- 1.2 BMI imputation ------------------------------------------------------
