@@ -9,7 +9,7 @@ library(ggplot2)
 # were generated via the eggNOG-mapper pipeline.
 # To support reproducible non-interactive execution, we directly load the
 # KEGG enrichment results previously generated via MicrobiomeProfiler.
-res_dir <- here("CodeAvailiable", "outputs", "genomic_annotation")
+res_dir <- here("outputs", "genomic_annotation")
 res_file <- file.path(res_dir, "Enrichment_Res.csv")
 enrich_res <- read.csv(res_file, row.names = 1)
 
@@ -47,7 +47,7 @@ p_dot <- ggplot(sig_res, aes(x = GeneRatio_Num, y = Description)) +
     )
 
 # --- 3. Save Outputs ---------------------------------------------------------
-out_dir <- here("CodeAvailiable", "outputs", "genomic_annotation")
+out_dir <- here("outputs", "genomic_annotation")
 if (!dir.exists(out_dir)) {
     dir.create(out_dir, recursive = TRUE)
 }
