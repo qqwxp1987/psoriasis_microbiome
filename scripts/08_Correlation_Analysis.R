@@ -5,8 +5,8 @@
 # - Species vs PASI (Supplementary)
 #
 # Required input files:
-#   data/clean/metaphlan/phyloseq_taxa_20240401.rds
-#   data/clean/metadata/metadata_20240613.txt  (with immune/clinical data)
+#   data/metaphlan/phyloseq_taxa.rds
+#   data/metadata.txt  (with immune/clinical data)
 #
 # Required R packages:
 #   here, phyloseq, ppcor, dplyr, microbiomeMarker
@@ -19,7 +19,7 @@ library(ppcor)
 library(dplyr)
 
 # --- 1. Data loading and normalisation ----------------------------------------
-phylo.obj <- readRDS(here("data", "metaphlan", "phyloseq_taxa_20240401.rds"))
+phylo.obj <- readRDS(here("data", "metaphlan", "phyloseq_taxa.rds"))
 
 # Subset to psoriasis patients only
 pso.obj <- subset_samples(phylo.obj, Disease == "Psoriasis")
@@ -48,7 +48,7 @@ otu_df <- as.data.frame(otu_mat) %>%
     as.data.frame()
 
 # Read extended metadata with immune/clinical data
-sample_data_ext <- read.table(here("data", "metadata_20240613.txt"),
+sample_data_ext <- read.table(here("data", "metadata.txt"),
     sep = "\t", header = TRUE, row.names = 1
 )
 sample_data_ext <- sample_data_ext %>% filter(Disease == "Psoriasis")

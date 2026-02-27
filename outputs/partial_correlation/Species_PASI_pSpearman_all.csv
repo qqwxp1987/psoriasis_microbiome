@@ -1,0 +1,8 @@
+"Species","Correlation","P_value"
+"k__Bacteria;p__Firmicutes;c__Clostridia;o__Eubacteriales;f__Lachnospiraceae;g__Dorea;s__Dorea_longicatena",-0.243847517101882,0.0205537384867675
+"k__Bacteria;p__Firmicutes;c__Clostridia;o__Eubacteriales;f__Lachnospiraceae;g__Dorea;s__Dorea_formicigenerans",-0.247319514421965,0.0187675487393626
+"k__Bacteria;p__Firmicutes;c__Clostridia;o__Eubacteriales;f__Oscillospiraceae;g__Ruminococcus;s__Ruminococcus_bromii",0.354384327359493,0.000610467898259933
+"k__Bacteria;p__Firmicutes;c__Clostridia;o__Eubacteriales;f__Clostridiaceae;g__Clostridium;s__Clostridium_sp_AF34_10BH",-0.218235990603695,0.0387901521651731
+"k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Bacteroidaceae;g__Phocaeicola;s__Phocaeicola_massiliensis",0.243960158072989,0.0204935810542625
+"k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Barnesiellaceae;g__Barnesiella;s__Barnesiella_intestinihominis",0.208628147263309,0.0484584366143739
+"k__Bacteria;p__Firmicutes;c__Clostridia;o__Eubacteriales;f__Oscillospiraceae;g__Agathobaculum;s__Agathobaculum_butyriciproducens",-0.258741384015875,0.0138006241722983
