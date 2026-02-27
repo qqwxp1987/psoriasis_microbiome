@@ -8,7 +8,7 @@ Analysis scripts and data for the manuscript: *"Disentangling Environmental and 
 psoriasis_microbiome/
 ├── README.md
 ├── scripts/
-│   ├── 00_Data_Preparation/          # Preprocessing from abundance tables to RDS
+│   ├── 00_Data_Preparation.R         # Preprocessing from abundance tables to RDS
 │   ├── 01_Alpha_Diversity.R          # Shannon & Pielou indices, MaAsLin2
 │   ├── 02_Beta_Diversity.R           # PERMANOVA, JSD, Bray-Curtis distances
 │   ├── 03_Network_Analysis.R         # Co-occurrence networks (ggClusterNet)
